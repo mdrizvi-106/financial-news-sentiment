@@ -2,7 +2,7 @@
 
 A real-time NLP web app that analyses the sentiment of live financial news headlines for any stock ticker — built with FinBERT, Streamlit, and yfinance.
 
-🔗 **Live Demo:** [your-app-url.streamlit.app](https://your-app-url.streamlit.app)
+🔗 **Live Demo:** [Click here](https://financial-news-sentiment-vqnfkkue2pdkwj3nlxnfqm.streamlit.app)
 
 ---
 
