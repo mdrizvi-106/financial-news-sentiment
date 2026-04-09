@@ -29,9 +29,10 @@ html, body, [class*="css"] {
 
 /* Header */
 .hero {
-    padding: 3rem 0 2rem 0;
+    padding: 2rem 0 2rem 0;
     border-bottom: 1px solid #1e1e2e;
     margin-bottom: 2rem;
+    text-align: left;
 }
 .hero-title {
     font-family: 'Space Mono', monospace;
