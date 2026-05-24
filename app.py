@@ -224,15 +224,7 @@ html, body, [class*="css"] {
 </style>
 """, unsafe_allow_html=True)
 
-# ── Plotly dark template ──────────────────────────────────────────────────────
-PLOT_LAYOUT = dict(
-    paper_bgcolor="rgba(0,0,0,0)",
-    plot_bgcolor="rgba(0,0,0,0)",
-    font=dict(family="DM Sans", color="#e8e8f0"),
-    margin=dict(l=0, r=0, t=30, b=0),
-    xaxis=dict(showgrid=False, zeroline=False, color="#6b6b8a"),
-    yaxis=dict(showgrid=True, gridcolor="#1e1e2e", zeroline=False, color="#6b6b8a"),
-)
+# Plotly base colours
 
 # ── Model cache ───────────────────────────────────────────────────────────────
 @st.cache_resource(show_spinner=False)
@@ -384,7 +376,12 @@ if analyse_clicked and raw_input.strip():
                 orientation='h',
                 height=320,
             )
-            bar.update_layout(**PLOT_LAYOUT,
+            bar.update_layout(
+                              paper_bgcolor="rgba(0,0,0,0)",
+                              plot_bgcolor="rgba(0,0,0,0)",
+                              font=dict(family="DM Sans", color="#e8e8f0"),
+                              xaxis=dict(showgrid=False, zeroline=False, color="#6b6b8a"),
+                              yaxis=dict(showgrid=True, gridcolor="#1e1e2e", zeroline=False, color="#6b6b8a"),
                               xaxis_title="Confidence", yaxis_title="",
                               margin=dict(l=0, r=0, t=55, b=0),
                               legend=dict(orientation='h', y=1.18, x=0,
@@ -467,8 +464,14 @@ if analyse_clicked and raw_input.strip():
                                                   'negative': '#ff4f4f',
                                                   'neutral': '#3a3a5c'},
                               height=320)
-            comp_bar.update_layout(**PLOT_LAYOUT,
-                                   legend=dict(orientation='h', y=1.08))
+            comp_bar.update_layout(
+                                   paper_bgcolor="rgba(0,0,0,0)",
+                                   plot_bgcolor="rgba(0,0,0,0)",
+                                   font=dict(family="DM Sans", color="#e8e8f0"),
+                                   xaxis=dict(showgrid=False, zeroline=False, color="#6b6b8a"),
+                                   yaxis=dict(showgrid=True, gridcolor="#1e1e2e", zeroline=False, color="#6b6b8a"),
+                                   margin=dict(l=0, r=0, t=50, b=0),
+                                   legend=dict(orientation='h', y=1.12, x=0, font=dict(size=11)))
             comp_bar.update_traces(marker_line_width=0)
             st.plotly_chart(comp_bar, use_container_width=True, config={'displayModeBar': False})
 
@@ -481,7 +484,14 @@ if analyse_clicked and raw_input.strip():
                               color='Ticker',
                               color_discrete_sequence=['#00ff9d', '#ffd166', '#00b4d8'],
                               height=250, text_auto='.2%')
-            conf_bar.update_layout(**PLOT_LAYOUT, showlegend=False,
+            conf_bar.update_layout(
+                                   paper_bgcolor="rgba(0,0,0,0)",
+                                   plot_bgcolor="rgba(0,0,0,0)",
+                                   font=dict(family="DM Sans", color="#e8e8f0"),
+                                   xaxis=dict(showgrid=False, zeroline=False, color="#6b6b8a"),
+                                   yaxis=dict(showgrid=True, gridcolor="#1e1e2e", zeroline=False, color="#6b6b8a"),
+                                   margin=dict(l=0, r=0, t=30, b=0),
+                                   showlegend=False,
                                    yaxis_tickformat='.0%')
             conf_bar.update_traces(marker_line_width=0)
             st.plotly_chart(conf_bar, use_container_width=True, config={'displayModeBar': False})
