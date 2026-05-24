@@ -360,15 +360,18 @@ if analyse_clicked and raw_input.strip():
                     hovertemplate='%{label}: %{value}<extra></extra>',
                 ))
                 donut.update_layout(
-                    **{k: v for k, v in PLOT_LAYOUT.items() if k not in ('xaxis', 'yaxis')},
+                    paper_bgcolor="rgba(0,0,0,0)",
+                    plot_bgcolor="rgba(0,0,0,0)",
+                    font=dict(family="DM Sans", color="#e8e8f0"),
                     showlegend=False,
                     height=130,
                     margin=dict(l=0, r=0, t=0, b=0),
-                    annotations=[dict(text=f"<b>{dominant.upper()}</b>",
-                                      x=0.5, y=0.5, font_size=13,
-                                      font_color=COLOUR[dominant],
-                                      font_family="Space Mono, monospace",
-                                      showarrow=False)],
+                    annotations=[dict(
+                        text=f"<b>{dominant.upper()}</b>",
+                        x=0.5, y=0.5,
+                        font=dict(size=13, color=COLOUR[dominant], family="Space Mono, monospace"),
+                        showarrow=False,
+                    )],
                 )
                 st.plotly_chart(donut, use_container_width=True, config={'displayModeBar': False})
 
