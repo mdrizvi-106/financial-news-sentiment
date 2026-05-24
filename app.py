@@ -386,7 +386,8 @@ if analyse_clicked and raw_input.strip():
             )
             bar.update_layout(**PLOT_LAYOUT,
                               xaxis_title="Confidence", yaxis_title="",
-                              legend=dict(orientation='h', y=1.08,
+                              margin=dict(l=0, r=0, t=55, b=0),
+                              legend=dict(orientation='h', y=1.18, x=0,
                                           font=dict(size=11)))
             bar.update_traces(marker_line_width=0)
             st.plotly_chart(bar, use_container_width=True, config={'displayModeBar': False})
