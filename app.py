@@ -6,6 +6,7 @@ from plotly.subplots import make_subplots
 import pandas as pd
 from transformers import pipeline
 import io
+import time
 
 # ── Page config ──────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -96,7 +97,6 @@ html, body, [class*="css"] {
     border-radius: 8px;
     padding: 0.9rem 1.1rem;
     margin-bottom: 0.6rem;
-    transition: border-left-color 0.2s;
 }
 .headline-card.positive { border-left-color: var(--positive); }
 .headline-card.negative { border-left-color: var(--negative); }
@@ -218,10 +218,31 @@ html, body, [class*="css"] {
 def load_model():
     return pipeline("sentiment-analysis", model="ProsusAI/finbert")
 
+# ── Rate-limit-aware news fetch ───────────────────────────────────────────────
+def fetch_news_with_retry(ticker_sym: str, retries: int = 4, base_delay: int = 5):
+    for attempt in range(retries):
+        try:
+            return yf.Ticker(ticker_sym).news[:25]
+        except Exception as e:
+            err = str(e).lower()
+            if 'ratelimit' in err or 'rate limit' in err or 'too many' in err:
+                if attempt < retries - 1:
+                    wait = base_delay * (2 ** attempt)
+                    st.toast(f"Yahoo Finance rate limit — retrying {ticker_sym} in {wait}s…")
+                    time.sleep(wait)
+                else:
+                    st.error(
+                        "Yahoo Finance is rate-limiting requests from this server. "
+                        "Please wait 30–60 seconds and try again."
+                    )
+                    return None
+            else:
+                raise
+    return None
+
 # ── Fetch + analyse helper ────────────────────────────────────────────────────
 def fetch_and_analyse(ticker_sym: str, model, min_confidence: float):
-    ticker = yf.Ticker(ticker_sym)
-    news = ticker.news[:25]
+    news = fetch_news_with_retry(ticker_sym)
     if not news:
         return None
     results = []
@@ -280,6 +301,8 @@ if analyse_clicked and raw_input.strip():
     progress = st.progress(0, text="Fetching news…")
     for i, sym in enumerate(tickers):
         progress.progress((i + 1) / len(tickers), text=f"Analysing {sym}…")
+        if i > 0:
+            time.sleep(2)  # small delay between tickers to avoid rate limits
         df = fetch_and_analyse(sym, model, min_conf)
         if df is not None:
             all_dfs.append(df)
